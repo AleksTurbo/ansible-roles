@@ -1,9 +1,0 @@
----
-
-- name: "Ansible | Print a variable"
-  debug:
-    msg: "The new hostname is: {{ new_hostname }}"
-
-- name: Set a hostname
-  ansible.builtin.hostname:
-    name: "{{ new_hostname }}"

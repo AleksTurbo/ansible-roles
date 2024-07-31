@@ -1,0 +1,42 @@
+---
+- name: check of swap
+  shell: "free | grep 'Swap' | awk '{print $2}'"
+  changed_when: False
+  register: swap_size_on_host
+
+- name: "DEBUG | Print a variable"
+  debug:
+    msg: "swap_size_on_host: {{ swap_size_on_host.stdout }}"
+
+- name: "DEBUG | Print a variable"
+  debug:
+    msg: "ansible_swaptotal_mb: {{ ansible_swaptotal_mb }}"
+
+- name: check path of swap
+  shell: "swapon -s -e | tail -1 | awk '{print $1}'"
+  changed_when: False
+  register: swap_path_on_host
+
+- name: "DEBUG | Print a variable"
+  debug:
+    msg: "swap_path_on_host: {{ swap_path_on_host.stdout }}"
+    
+- name: If swap is exist
+  block:
+    - name: disable the swap file
+      shell: swapoff --all
+
+    - name: remove the swap file
+      ansible.builtin.file:
+        state: absent
+        path: "{{ swap_path_on_host.stdout }}"
+
+    - name: clear str swap in fstab
+      mount:
+        src: "{{ swap_path_on_host.stdout }}"
+        path: none
+        fstype: swap
+        state: absent
+
+  when:
+    - ansible_swaptotal_mb > 0
