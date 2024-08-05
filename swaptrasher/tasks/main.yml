@@ -3,6 +3,7 @@
   shell: "free | grep 'Swap' | awk '{print $2}'"
   changed_when: False
   register: swap_size_on_host
+  become: true
 
 - name: "DEBUG | Print a variable"
   debug:
@@ -16,6 +17,7 @@
   shell: "swapon -s -e | tail -1 | awk '{print $1}'"
   changed_when: False
   register: swap_path_on_host
+  become: true
 
 - name: "DEBUG | Print a variable"
   debug:
@@ -25,6 +27,7 @@
   block:
     - name: disable the swap file
       shell: swapoff --all
+      become: true
 
     - name: remove the swap file
       ansible.builtin.file:
