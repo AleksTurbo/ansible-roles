@@ -7,11 +7,11 @@
 
 - name: "Ansible | Print a variable"
   debug:
-    msg: "The new hostname is: {{ inventory_hostname }}"
+    msg: "The new hostname is: {{ hostname }}"
 
 - name: Set a hostname
   ansible.builtin.hostname:
-    name: "{{ inventory_hostname }}"
+    name: "{{ hostname }}"
 
 - name: update apt cache
   apt:
@@ -27,7 +27,6 @@
       shell: fallocate -l {{ swap_size }} {{ swapfile_path }}
       args:
         creates: "{{ swapfile_path }}"
-      become: true
 
     - name: set the correct permissions
       file:
@@ -35,17 +34,14 @@
         owner: root
         group: root
         mode: '0600'
-      become: true
 
     - name: make the file a swap file
       shell: mkswap {{ swapfile_path }}
       when: ansible_facts.swapfree_mb == 0
-      become: true
 
     - name: enable the swap file
       shell: swapon {{ swapfile_path }}
       when: ansible_facts.swapfree_mb == 0
-      become: true
 
     - name: add swap file to fstab
       mount:
@@ -56,4 +52,13 @@
         passno: 0
         dump: 0
         state: present
-      become: true
+    
+  become: true
+
+- name: installation packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ packages }}"
+  become: true

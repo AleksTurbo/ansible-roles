@@ -1,0 +1,3 @@
+---
+# defaults file for docker
+DockerComposeVersion: v2.29.1
