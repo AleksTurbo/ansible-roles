@@ -7,16 +7,32 @@
 
 - name: "Ansible | Print a variable"
   debug:
-    msg: "The new hostname is: {{ hostname }}"
+    msg: "The new hostname is: {{ inventory_hostname  }}"
 
 - name: Set a hostname
   ansible.builtin.hostname:
-    name: "{{ hostname }}"
+    name: "{{ inventory_hostname }}"
 
 - name: Update apt cache
   apt:
     update_cache: yes
   become: true
+
+- name: Get swap path
+  shell: swapon --show
+  register: swap_path
+
+- name: Pring swap path
+  debug:
+    var: swap_path.stdout_lines
+
+- name: Get LA
+  shell: uptime | cut -d ' ' -f 11-
+  register: host_LA
+
+- name: Pring LA
+  debug:
+    var: host_LA.stdout
 
 - block:
     - name: "DEBUG | Print a variable - path for swap"
