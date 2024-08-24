@@ -1,7 +1,7 @@
 ---
 # tasks file for common
 
-- name: set timezone (see defaults)
+- name: Set timezone (see defaults)
   timezone:
     name: "{{ time_zone }}"
 
@@ -13,7 +13,7 @@
   ansible.builtin.hostname:
     name: "{{ hostname }}"
 
-- name: update apt cache
+- name: Update apt cache
   apt:
     update_cache: yes
   become: true
@@ -23,27 +23,27 @@
       debug:
         msg: "The path for swap: {{ swapfile_path }}"
 
-    - name: create a swap file
+    - name: Create a swap file
       shell: fallocate -l {{ swap_size }} {{ swapfile_path }}
       args:
         creates: "{{ swapfile_path }}"
 
-    - name: set the correct permissions
+    - name: Set the correct permissions
       file:
         path: "{{ swapfile_path }}"
         owner: root
         group: root
         mode: '0600'
 
-    - name: make the file a swap file
+    - name: Make the file a swap file
       shell: mkswap {{ swapfile_path }}
       when: ansible_facts.swapfree_mb == 0
 
-    - name: enable the swap file
+    - name: Enable the swap file
       shell: swapon {{ swapfile_path }}
       when: ansible_facts.swapfree_mb == 0
 
-    - name: add swap file to fstab
+    - name: Add swap file to fstab
       mount:
         name: none
         src: "{{ swapfile_path }}"
@@ -55,7 +55,7 @@
     
   become: true
 
-- name: installation packages
+- name: Installation packages
   apt:
     name: "{{ item }}"
     state: present

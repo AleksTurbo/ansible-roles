@@ -1,5 +1,5 @@
 ---
-- name: check of swap
+- name: Check of swap
   shell: "free | grep 'Swap' | awk '{print $2}'"
   changed_when: False
   register: swap_size_on_host
@@ -13,7 +13,7 @@
   debug:
     msg: "ansible_swaptotal_mb: {{ ansible_swaptotal_mb }}"
 
-- name: check path of swap
+- name: Check path of swap
   shell: "swapon -s -e | tail -1 | awk '{print $1}'"
   changed_when: False
   register: swap_path_on_host
@@ -25,16 +25,16 @@
     
 - name: If swap is exist
   block:
-    - name: disable the swap file
+    - name: Disable the swap file
       shell: swapoff --all
       become: true
 
-    - name: remove the swap file
+    - name: Remove the swap file
       ansible.builtin.file:
         state: absent
         path: "{{ swap_path_on_host.stdout }}"
 
-    - name: clear str swap in fstab
+    - name: Clear str swap in fstab
       mount:
         src: "{{ swap_path_on_host.stdout }}"
         path: none
