@@ -30,7 +30,7 @@
       become: true
 
     - name: Remove the swap file
-      ansible.builtin.file:
+      file:
         state: absent
         path: "{{ swap_path_on_host.stdout }}"
 

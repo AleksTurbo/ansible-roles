@@ -10,7 +10,7 @@
     msg: "The new hostname is: {{ inventory_hostname  }}"
 
 - name: Set a hostname
-  ansible.builtin.hostname:
+  hostname:
     name: "{{ inventory_hostname }}"
 
 - name: Update apt cache

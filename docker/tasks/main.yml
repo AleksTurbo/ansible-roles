@@ -3,16 +3,16 @@
 
 - block:
 
-  - name: installation env
+  - name: Installation env
     apt:
       name: ca-certificates, curl
       state: present
       update_cache: yes
 
-  - name: keyrings
+  - name: Keyrings
     shell: install -m 0755 -d /etc/apt/keyrings
 
-  - name: add GPG
+  - name: Add GPG
     apt_key:
       url: https://download.docker.com/linux/ubuntu/gpg
       state: present
@@ -23,22 +23,22 @@
       state: present
       filename: docker
   
-  - name: update cache
+  - name: Update cache
     apt:
       update_cache: yes
 
-  - name: install docker
+  - name: Install docker
     apt:
       name: docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin
       state: present
 
-  - name: service docker
+  - name: Service docker
     service:
       name: docker
       state: started
       enabled: yes
   
-  - name: adding ansible user to group docker
+  - name: Adding ansible user to group docker
     user:
       name: '{{ ansible_user_id }}'
       groups: docker
