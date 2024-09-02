@@ -1,6 +1,8 @@
 user {{ nginx_user }};
 worker_processes {{ nginx_worker_processes }};
 
+error_log /var/log/nginx/error.log debug;
+
 events {
     worker_connections {{ nginx_worker_connections }};
 }
@@ -12,15 +14,8 @@ http {
     sendfile        on;
     keepalive_timeout  65;
 
-    server {
-        listen       {{ listen_port }};
-        server_name  {{ server_name }};
+    auth_basic "Restricted area";
+    auth_basic_user_file /etc/nginx/passwdfile;
 
-        location / {
-            proxy_pass {{ ip_proxy_host }}:{{ proxy_port }};
-            proxy_set_header Host $host;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Real-IP $remote_addr;
-        }
-    }
+    include /etc/nginx/conf.d/*.conf;
 }

@@ -18,12 +18,34 @@
       name: nginx
       state: started
       enabled: true
+  
+  - name: Modding index.html
+    shell: sed -i 's/Welcome to nginx!/Welcome to "{{ server_name }}"/' /usr/share/nginx/html/index.html
 
   - name: Disable default site if required
     file:
       path: /etc/nginx/sites-enabled/default
       state: absent
     when: not nginx_default_sites_enabled
+
+  - name: Add a user to a password file and ensure permissions are set
+    community.general.htpasswd:
+      path: /etc/nginx/passwdfile
+      name: "{{ item.name }}"
+      password: "{{ item.password }}"
+      owner: root
+      group: www-data
+      mode: 0640
+    with_items: "{{ user_list }}"
+
+  - name: Deploy nginx site file
+    template:
+      src: site.conf.j2
+      dest: "{{ nginx_path }}/conf.d/site.conf"
+      owner: root
+      group: root
+      mode: '0644'
+      backup: yes
 
   - name: Deploy nginx configuration file
     template:
