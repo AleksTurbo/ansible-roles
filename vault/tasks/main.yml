@@ -1,0 +1,80 @@
+---
+- name: Copy Docker Compose files
+  copy:
+    src: files/docker-compose.yml
+    dest: docker-compose.yml
+
+- name: Deploy vault configuration file
+  template:
+    src: config.hcl.j2
+    dest: ./config.hcl
+    owner: ansible
+    group: ansible
+    mode: '0644'
+    backup: yes
+  register: config_chng
+
+- name: Show results
+  debug:
+    var: config_chng
+
+- name: Creates directory
+  file:
+    path: file
+    owner: ansible
+    group: ansible
+    mode: '0644'
+    state: directory
+
+- name: Start container using docker-compose
+  community.docker.docker_compose_v2:
+    project_src: ./
+    files:
+    - docker-compose.yml
+  register: output
+
+- name: Show results
+  debug:
+    var: output.containers[0].State
+
+- name: Verify that vault are running
+  ansible.builtin.assert:
+    that:
+      - vault.State == 'running'
+  vars:
+    vault: >-
+      {{ output.containers | selectattr("Service", "equalto", "vault") | first }}
+
+- name: Init vault
+  shell: docker-compose exec -T vault vault operator init > vault_init.key
+  failed_when: "'FAILED' in output.stderr"
+  changed_when: "output.rc != 2"
+  register: output
+
+- name: Show results
+  debug:
+    var: output
+
+- name: Status vault
+  shell: docker-compose exec -T vault vault status
+  failed_when: "'FAILED' in output.stderr"
+  register: output
+
+- name: Show results
+  debug:
+    var: output.stdout_lines
+
+- name: Restart container if config is changed
+  #shell: docker compose restart vault
+  debug:
+        msg: "Config is change! Need restart"
+  when: config_chng.changed == true
+
+- name: Restart container if config is changed
+  shell: docker compose restart vault
+  when: config_chng.changed == true
+  register: output
+
+- name: Show results
+  debug:
+    var: output

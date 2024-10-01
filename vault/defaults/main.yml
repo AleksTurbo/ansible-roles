@@ -1,0 +1,3 @@
+---
+# defaults file for vault
+vault_conf_path: /etc/vault.d/vault.hcl
