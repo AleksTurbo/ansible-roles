@@ -33,6 +33,7 @@
       file:
         state: absent
         path: "{{ swap_path_on_host.stdout }}"
+      become: true
 
     - name: Clear str swap in fstab
       mount:
