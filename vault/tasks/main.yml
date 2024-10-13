@@ -27,7 +27,7 @@
     state: directory
 
 - name: Start container using docker-compose
-  community.docker.docker_compose_v2:
+  community.docker.docker_compose:
     project_src: ./
     files:
     - docker-compose.yml
