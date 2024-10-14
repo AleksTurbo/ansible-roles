@@ -41,6 +41,7 @@
         path: none
         fstype: swap
         state: absent
+      become: true
 
   when:
     - ansible_swaptotal_mb > 0
