@@ -1,13 +1,26 @@
 ---
 # tasks file for create_user72
-- name: Add the user 'james' with a bash shell, appending the group 'admins' and 'developers' to the user's groups
+- name: Add the user with a bash shell
   ansible.builtin.user:
-    name: {{ new_user }}
+    name: "{{ new_user }}"
     shell: /bin/bash
 
 - name: Create a 2048-bit SSH key for user
   ansible.builtin.user:
-    name: {{ new_user }}
+    name: "{{ new_user }}"
     generate_ssh_key: yes
     ssh_key_bits: 2048
     ssh_key_file: .ssh/id_rsa
+  register: summary
+
+- name: "DEBUG | Check result:"
+  debug:
+    msg: "Check result: {{ summary.ssh_public_key }}"
+
+- name: Save data to file
+  lineinfile:
+    line: "{{ summary.ssh_public_key }}"
+    path: '/root/.ssh/authorized_keys'
+    state: present
+    create: true
+  delegate_to: 192.168.153.113
