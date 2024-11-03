@@ -33,6 +33,7 @@
       file:
         state: absent
         path: "{{ swap_path_on_host.stdout }}"
+      become: true
 
     - name: Clear str swap in fstab
       mount:
@@ -40,6 +41,7 @@
         path: none
         fstype: swap
         state: absent
+      become: true
 
   when:
     - ansible_swaptotal_mb > 0

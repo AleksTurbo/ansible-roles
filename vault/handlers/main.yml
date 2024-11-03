@@ -1,7 +1,7 @@
 ---
 # handlers file for vault
 - name: Restart services vault
-  community.docker.docker_compose_v2:
+  community.docker.docker_compose:
     project_src: vault
     state: restarted
   register: output
