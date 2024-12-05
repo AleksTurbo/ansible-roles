@@ -1,0 +1,4 @@
+---
+# defaults file for consul_master
+encrypt_key: 83fHP+oXSWVMLaQO/4Dlz+lN3GJ2dENxC7yTdw2A5Uo=
+advertise_IP: 192.168.153.132

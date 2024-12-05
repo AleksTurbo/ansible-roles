@@ -1,0 +1,43 @@
+---
+# tasks file for consul_master
+- name: Create a config directory if it does not exist
+  file:
+    path: /srv/monitoring/consul/
+    state: directory
+    mode: '0755'
+
+- name: Deploy consul config
+  template:
+    src: docker-compose-consul.yml.j2
+    dest: /srv/monitoring/consul/docker-compose-consul.yml
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes
+
+- name: Allow connections WEB-GUI
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 8500
+    jump: ACCEPT
+
+- name: Allow connections on TCP ports
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 8301
+    jump: ACCEPT
+
+- name: Allow connections on UDP ports
+  iptables:
+    chain: INPUT
+    protocol: udp
+    destination_port: 8301
+    jump: ACCEPT
+
+- name: Deploy Docker Compose stack
+  community.docker.docker_compose_v2:
+    project_src: /srv/monitoring/consul
+    files:
+    - docker-compose-consul.yml  

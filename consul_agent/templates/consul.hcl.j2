@@ -1,0 +1,8 @@
+datacenter = "{{ datacenter_name }}"
+node_name = "{{ ansible_nodename }}"
+data_dir = "/opt/consul"
+client_addr = "0.0.0.0"
+retry_join = ["{{ consul_master_ip }}"]
+bind_addr = "0.0.0.0"
+advertise_addr = "{{ ansible_default_ipv4.address }}"
+encrypt = "{{ consul_master_encrypt }}"
