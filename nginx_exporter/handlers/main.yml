@@ -1,0 +1,11 @@
+---
+# handlers file for nginx_exporter
+- name: restart nginx_exporter
+  service:
+    name: nginx_exporter
+    state: restarted
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted

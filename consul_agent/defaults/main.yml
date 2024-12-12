@@ -1,8 +1,8 @@
 ---
 # defaults file for consul_agent
 consul_agent_url: https://aleksturbo.ru/soft/linux/consul_1.20.1_linux_amd64.zip
-consul_master_ip: 5.188.50.92
+consul_master_ip: 192.168.153.132
 datacenter_name: dc1
 consul_master_encrypt: 83fHP+oXSWVMLaQO/4Dlz+lN3GJ2dENxC7yTdw2A5Uo=
 consul_node_name: node
-consul_node_ip: 178.155.12.9
+consul_node_ip: 192.168.153.132

@@ -1,0 +1,7 @@
+---
+# defaults file for nginx_exporter
+nginx_exporter_download_url: https://github.com/nginxinc/nginx-prometheus-exporter/releases/download/v{{ nginx_exporter_version }}/nginx-prometheus-exporter_{{ nginx_exporter_version }}_linux_{{ nginx_exporter_arch }}.tar.gz
+nginx_exporter_filename:
+nginx_exporter_version: '1.4.0'
+nginx_exporter_arch: 'amd64'
+consul_conf_dir: /etc/consul.d/

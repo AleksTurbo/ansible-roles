@@ -1,0 +1,12 @@
+{
+  "service": {
+    "name": "nginx_exporter",
+    "tags": ["metrics", "hostname:serv-alkstrb-test"],
+    "port": 9113,
+    "check": {
+      "http": "http://127.0.0.1:9113/metrics",
+      "interval": "10s",
+      "timeout": "1s"
+    }
+  }
+}

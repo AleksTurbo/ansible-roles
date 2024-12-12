@@ -1,7 +1,7 @@
 {
   "service": {
     "name": "node_exporter",
-    "tags": ["metrics"],
+    "tags": ["metrics", "{{ inventory_hostname  }}"],
     "port": 9100,
     "check": {
       "http": "http://127.0.0.1:9100/metrics",
