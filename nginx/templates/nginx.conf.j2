@@ -14,8 +14,5 @@ http {
     sendfile        on;
     keepalive_timeout  65;
 
-    auth_basic "Restricted area";
-    auth_basic_user_file /etc/nginx/passwdfile;
-
     include /etc/nginx/conf.d/*.conf;
 }

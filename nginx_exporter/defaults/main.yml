@@ -5,3 +5,5 @@ nginx_exporter_filename:
 nginx_exporter_version: '1.4.0'
 nginx_exporter_arch: 'amd64'
 consul_conf_dir: /etc/consul.d/
+web_config_file: /etc/web-config.yml
+nginx_scrape_uri: http://127.0.0.1:8008/server-status

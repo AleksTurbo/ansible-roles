@@ -49,6 +49,17 @@
       group: root
       mode: '0644'
       backup: yes
+    notify:
+      - Reload nginx
+  
+  - name: Deploy nginx index file
+    template:
+      src: index.html.j2
+      dest: /usr/share/nginx/html/index.html
+      owner: root
+      group: root
+      mode: '0644'
+      backup: no
 
   - name: Deploy nginx configuration file
     template:

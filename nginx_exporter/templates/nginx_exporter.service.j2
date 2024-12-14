@@ -6,7 +6,7 @@ After=network.target
 User=nginx_exporter
 Group=nginx_exporter
 Type=simple
-ExecStart=/usr/local/bin/nginx-prometheus-exporter -nginx.scrape-uri=http://127.0.0.1:8008/server-status
+ExecStart=/usr/local/bin/nginx-prometheus-exporter --nginx.scrape-uri={{nginx_scrape_uri}}
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 
